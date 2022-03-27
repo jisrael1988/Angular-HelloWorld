@@ -3,7 +3,6 @@ def DIST_ARCHIVE = "dist.${env.BUILD_NUMBER}"
 
 pipeline {
     agent any
-    tools { nodejs "Angular Project" }
 
     stages {
         stage('NPM Install') {
