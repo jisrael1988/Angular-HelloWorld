@@ -1,6 +1,5 @@
 def VERSION = "${env.BUILD_NUMBER}"
 def DIST_ARCHIVE = "dist.${env.BUILD_NUMBER}"
-def S3_BUCKET = 'angular-prod-deploy'
 
 pipeline {
     agent any
@@ -9,9 +8,6 @@ pipeline {
     stages {
         stage('NPM Install') {
             steps {
-                script {
-                    notifyBitbucket(buildStatus: 'INPROGRESS')
-                }
                 sh 'npm install --verbose -d'
             }
         }
@@ -22,6 +18,7 @@ pipeline {
         }
         stage('Build') {
             steps {
+                sh 'npm run clean'
                 sh 'npm run build'
             }
         }
