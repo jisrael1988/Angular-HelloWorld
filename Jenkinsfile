@@ -1,42 +1,48 @@
-def VERSION = "${env.BUILD_NUMBER}"
-def DIST_ARCHIVE = "dist.${env.BUILD_NUMBER}"
 
-pipeline {
-    agent any
+node {
 
-    stages {
+    
+    try {
+        notify('INITIALIZED')
+    
+        stage('Git Checkout'){
+            git 'https://github.com/Uokereh/Angular-HelloWorld-master.git'
+        }
+    
+
         stage('NPM Install') {
-            steps {
-                sh 'npm install --verbose -d'
-            }
+            sh 'npm install'
         }
-        stage('Test') {
-            steps {
-                sh 'npm run test'
-            }
-        }
+        
         stage('Build') {
-            steps {
-                sh 'npm run clean'
-                sh 'npm run build'
-            }
+            sh 'npm run build'
+            sh 'npm run ng build'
         }
-        stage('Archive') {
-            steps {
-              sh "cd dist && zip -r ../${DIST_ARCHIVE}.zip . && cd .."
-              archiveArtifacts artifacts: "${DIST_ARCHIVE}.zip", fingerprint: true
-            }
-        }
+
         stage('Deploy') {
-            steps {
-                sshagent(['ansible_demo']){
-                    sh "ssh ec2-user@3.87.47.98 rm -rf /var/www/temp_deploy/dist/"
-                    sh "ssh ec2-user@3.87.47.98 rmkdir -p /var/www/temp_deploy"
-                    sh "scp -r dist ec2-user@3.87.47.98:/var/www/temp_deploy/dist/"
-                    sh "ssh user@server “rm -rf /var/www/example.com/dist/ && mv /var/www/temp_deploy/dist/ /var/www/example.com/”"
-                }
-                
+            sshagent(['apache']){
+                sh 'ssh -o StrictHostKeyChecking=no ec2-user@18.207.200.20 "rm -rf /var/www/html/dist/"'
+                sh 'ssh -o StrictHostKeyChecking=no ec2-user@18.207.200.20 "mkdir -p /var/www/html"'
+                sh 'scp -r ${WORKSPACE}/dist/* ec2-user@18.207.200.20:/var/www/html/'
             }
-        }
+                
+        }   
+    } catch (e) {
+            currentBuild.result = "FAILED"
+            throw e
+    } finally {
+            notify(currentBuild.result)
     }
+}
+
+def notify(String buildStatus) {
+            
+    // send to email
+    emailext (
+        subject: "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+        body: """<p>${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+        <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+        to: "UjuchrisOkereh@gmail.com",
+        recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+    )
 }

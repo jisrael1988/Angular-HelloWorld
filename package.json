@@ -10,27 +10,30 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+
+
   "private": true,
   "dependencies": {
-    "@angular/animations": "^7.2.0",
-    "@angular/common": "^7.2.0",
-    "@angular/compiler": "^7.2.0",
-    "@angular/core": "^7.2.0",
-    "@angular/forms": "^7.2.0",
-    "@angular/http": "^7.2.0",
-    "@angular/platform-browser": "^7.2.0",
-    "@angular/platform-browser-dynamic": "^7.2.0",
-    "@angular/router": "^7.2.0",
-    "core-js": "^2.6.2",
-    "rxjs": "^6.1.0",
-    "tslib": "^1.9.0",
-    "zone.js": "^0.8.27"
+    "@angular/animations": "^13.3.0",
+    "@angular/common": "^13.3.0",
+    "@angular/compiler": "^13.3.0",
+    "@angular/core": "^13.3.0",
+    "@angular/forms": "^13.3.0",
+    "@angular/platform-browser": "^13.3.0",
+    "@angular/platform-browser-dynamic": "^13.3.0",
+    "@angular/router": "^13.3.0",
+    "core-js": "^3.21.1",
+    "rxjs": "^7.5.5",
+    "tslib": "^2.3.1",
+    "zone.js": "0.11.5"
   },
+
+
   "devDependencies": {
-    "@angular/cli": "^7.3.1",
-    "@angular/compiler-cli": "^7.2.0",
-    "@angular/language-service": "^7.2.0",
-    "typescript": "3.2.2",
-    "@angular-devkit/build-angular": "~0.12.0"
+    "@angular/cli": "^13.3.0",
+    "@angular/compiler-cli": "^13.3.0",
+    "@angular/language-service": "^13.3.0",
+    "typescript": "^4.6.3",
+    "@angular-devkit/build-angular": "^13.3.0"
   }
 }
