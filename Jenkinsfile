@@ -21,9 +21,9 @@ node {
 
         stage('Deploy') {
             sshagent(['apache']){
-                sh 'ssh -o StrictHostKeyChecking=no ec2-user@18.212.42.1 "rm -rf /var/www/html/dist/"'
-                sh 'ssh -o StrictHostKeyChecking=no ec2-user@18.212.42.1 "mkdir -p /var/www/html"'
-                sh 'scp -r ${WORKSPACE}/dist/* ec2-user@18.212.42.1:/var/www/html/'
+                sh 'ssh -o StrictHostKeyChecking=no ec2-user@<WEB-SERVER-IP> "rm -rf /var/www/html/dist/"'
+                sh 'ssh -o StrictHostKeyChecking=no ec2-user@<WEB-SERVER-IP> "mkdir -p /var/www/html"'
+                sh 'scp -r ${WORKSPACE}/dist/* ec2-user@<WEB-SERVER-IP>:/var/www/html/'
             }
                 
         }   
@@ -42,7 +42,7 @@ def notify(String buildStatus) {
         subject: "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
         body: """<p>${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
         <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
-        to: "joelbenisrael88@gmail.com",
+        to: "USER-EMAIL-ADDRESS@gmail.com",
         recipientProviders: [[$class: 'DevelopersRecipientProvider']]
     )
 }
