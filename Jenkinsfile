@@ -6,7 +6,7 @@ node {
         notify('INITIALIZED')
     
         stage('Git Checkout'){
-            git 'https://github.com/Uokereh/Angular-HelloWorld-master.git'
+            git 'https://github.com/jisrael1988/Angular-HelloWorld.git'
         }
     
 
@@ -21,9 +21,9 @@ node {
 
         stage('Deploy') {
             sshagent(['apache']){
-                sh 'ssh -o StrictHostKeyChecking=no ec2-user@44.201.204.66 "rm -rf /var/www/html/dist/"'
-                sh 'ssh -o StrictHostKeyChecking=no ec2-user@44.201.204.66 "mkdir -p /var/www/html"'
-                sh 'scp -r ${WORKSPACE}/dist/* ec2-user@44.201.204.66:/var/www/html/'
+                sh 'ssh -o StrictHostKeyChecking=no ec2-user@3.92.214.245 "rm -rf /var/www/html/dist/"'
+                sh 'ssh -o StrictHostKeyChecking=no ec2-user@3.92.214.245 "mkdir -p /var/www/html"'
+                sh 'scp -r ${WORKSPACE}/dist/* ec2-user@3.92.214.245:/var/www/html/'
             }
                 
         }   
